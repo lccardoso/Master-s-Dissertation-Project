@@ -6,6 +6,7 @@
 #include <time.h>
 #include "Util.h"
 #include "Arquivos.h"
+#include "Construcao.h"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ void obter_parametros_fl(char nomearq[], int *m, int *n)
 		exit(1);
 	}
 	
-	fscan(arquivo, "%d %d", &num_facilidades, &num_clientes);
+	fscanf(arquivo, "%d %d", &num_facilidades, &num_clientes);
 	
 	*n = num_facilidades;
 	*m = num_clientes;
@@ -44,7 +45,7 @@ void le_arq_matrizfl(char nomearq[], int m, int n, float **F, float **C, int *c,
 	Coord = cria_matriz_float(m+n+1, 2);
 	valores = cria_vetor(m+n+1);
 	
-	i=o;
+	i=0;
 	j=0;
 	
 	arquivo = fopen(nomearq,"r");
@@ -89,7 +90,8 @@ void le_arq_matrizfl(char nomearq[], int m, int n, float **F, float **C, int *c,
 }
 
 //Criação de Matriz de distancia FacilidadexCliente
-float **cria_matriz_distfl(int m, int n, float **F, float **C){
+float **cria_matriz_distfl(int m, int n, float **F, float **C)
+{
 	float **matriz;
 	matriz = cria_matriz_float(m, n);
 	int i,j;

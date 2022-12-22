@@ -1,5 +1,5 @@
 /*
-Projeto de Dissertação - Metaheurísticas Aplicadas ao Problema de Localização de Conjuntos Parciais
+Projeto de Dissertação Mestrado - Metaheurísticas Aplicadas ao Problema de Localização de Conjuntos Parciais
 Autor: Leonardo Correa Cardoso
 Local: Centro Federal de Educação Tecnológica de Minas Gerais  - CEFET MG
 Data: 02/01/2023
@@ -19,6 +19,7 @@ Bibliotecas e Imports
 #include <time.h>
 #include "Arquivos.h"
 #include "Construcao.h"
+#include "Util.h"
 using namespace std;
 //---------------------------------------------------------------------------
 
@@ -77,7 +78,7 @@ int main(int argc, char* argv[]){
 	cria_matriz_adj(m, n, raio, D, A);
 		
 	
-	demand=calcula_demanda(m, d, porcentagem_d);	
+	//demand=calcula_demanda(m, d, porcentagem_d);	
 	
 	
 	system("PAUSE");
