@@ -76,9 +76,15 @@ int main(int argc, char* argv[]){
 	le_arq_matrizfl(arquivo, m, n, F, C, c, d);
 	D=cria_matriz_distfl(m, n, F, C);
 	cria_matriz_adj(m, n, raio, D, A);
-		
 	
-	//demand=calcula_demanda(m, d, porcentagem_d);	
+	/*Inicio da Execução dos Métodos Heurísticos*/
+	inicio_CPU = clock();
+	srand((unsigned) time(NULL)); // pega a hora do relogio como semente	
+	
+	demand=calcula_demanda(m, d, porcentagem_d);	
+	printf("Demanda atual do problema %.5f\n ",  demand);
+	
+	fim_CPU = clock();
 	
 	
 	system("PAUSE");
