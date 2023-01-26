@@ -81,8 +81,12 @@ int main(int argc, char* argv[]){
 	inicio_CPU = clock();
 	srand((unsigned) time(NULL)); // pega a hora do relogio como semente	
 	
+	/*Calculo da demanda corrente para o problema*/
 	demand=calcula_demanda(m, d, porcentagem_d);	
 	printf("Demanda atual do problema %.5f\n ",  demand);
+	
+	/*Construção de solução inicial randômica*/
+	constroi_solucao(n, y);
 	
 	fim_CPU = clock();
 	
