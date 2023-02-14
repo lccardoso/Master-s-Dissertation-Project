@@ -54,4 +54,111 @@ float calcula_fo(int m, int n, float demand, int alpha, int *d, int *c, int *z, 
 	return f;
 }
 
+//Função auxliar
+bool repeteindice(int *v, int valor, int n)
+	{
+		int rep = 0;
+		
+		for (int i=0; i<n; i++){
+			if (v[i]==valor) rep++;
+		}
+		
+		if (rep > 1){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+
+//Função auxliar	
+void atribuirvetor(int *v1, int *v2, int n){
+	for (int i=0; i<n;i++){
+		v1[i]=v2[i];
+	}
+}
+
+//Função auxliar
+void trocabit(int j, int *y)
+{
+	
+	if (y[j]==0){
+		y[j]=1;
+	}else{
+		y[j]=0;
+	}
+	
+}
+
+//Função auxiliar
+void refaz_vetor_cobertura(int pos, int m, int n, int **A, int *y, int *z)
+{
+	int coberto = 0;
+	int j;
+	
+	if (y[pos]==0)
+	{
+		//vetor_cobertura(m, n, A, y, z);
+			
+	int coberto;
+	for (int i=0; i<m;i++){
+		//if (z[i]==1) {
+		if (A[i][pos]==1){
+			
+		coberto = 0;
+		j=0;
+		while((coberto==0) && (j<n)){
+		
+		z[i]=0;
+		
+			if (A[i][j]*y[j]==1){
+				coberto = 1;
+				z[i]=1;
+			}else{
+				j=j+1;
+			}
+		}	
+
+		}
+		
+	}
+				
+	}
+	
+	if (y[pos]==1)
+	{
+		for (int i=0; i<m;i++){
+			if (A[i][pos]==1){
+				z[i]=1;
+			}
+			
+		}
+		
+	}
+	
+
+}
+
+//Função auxiliar
+int calcula_facilidades(int n, int *y){
+	int soma=0;
+	
+	for (int i=0; i<n; i++){
+		soma=soma+y[i];
+	}
+	return soma;
+}
+
+//Função auxiliar
+int calcula_clientes(int m, int *z){
+	int soma=0;
+	
+	for (int i=0; i<m; i++){
+		soma=soma+z[i];
+	}
+	return soma;
+}
+
+
+
 

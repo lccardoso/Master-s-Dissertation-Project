@@ -20,6 +20,7 @@ Bibliotecas e Imports
 #include "Arquivos.h"
 #include "Construcao.h"
 #include "Util.h"
+#include "heuristicas.h"
 using namespace std;
 //---------------------------------------------------------------------------
 
@@ -51,12 +52,12 @@ int main(int argc, char* argv[]){
    
    //Leitura dos arquivos das instâncias, montagem das matrizes e vetores para resolução do modelo
    
-    float raio=5.5;	//raio de cobertura 
+    float raio=6.25;	//raio de cobertura 
     float porcentagem_d = 0.5;	//percentual da demanda atendido
     int alpha = 1000;
 	int itermax=100;	//numero maximo de iterações - ILS
 	int ilsmax=10;		
-	int vezesnivel = 2; 
+	int vezesnivel = 10; 
 	
 	char arquivo[] = "inst1.txt";
 		
@@ -85,8 +86,33 @@ int main(int argc, char* argv[]){
 	demand=calcula_demanda(m, d, porcentagem_d);	
 	printf("Demanda atual do problema %.5f\n ",  demand);
 	
-	/*Construção de solução inicial randômica*/
+	/*Construção de solução inicial*/
 	constroi_solucao(n, y);
+	
+	vetor_cobertura(m,n,A,y,z);
+	fo=calcula_fo(m, n, demand, alpha, d, c, z, y);
+	ninst = calcula_facilidades(n, y);
+	ncli = calcula_clientes(m, z);
+	printf("Fo da solucao incial: %.5f - Clientes atendidos: %d - Facilidades abertas: %d\n",fo, ncli, ninst);
+	
+	//Refinamento	
+	fo=ils (m, n, A, z, y, d, c, alpha, itermax,  vezesnivel,  demand, 0.6);
+	
+	fim_CPU = clock();
+	printf("Tempo execucao = %10.2f segundos\n",(float)(fim_CPU - inicio_CPU)/CLOCKS_PER_SEC);
+	
+	ninst = calcula_facilidades(n, y);
+	ncli = calcula_clientes(m, z);
+	
+	float demanda_atendida=0;
+		for (int i=0; i<m;i++){
+			demanda_atendida=demanda_atendida + z[i]*d[i];
+		}
+	
+	printf("Fo da solucao Final Refinada: %f - Clientes atendidos: %d - Facilidades abertas: %d - Demanda atendida: %f\n",fo, ncli, ninst, demanda_atendida);
+	for (int i=0; i<n; i++){
+		if (y[i]==1) printf("Facilidade aberta: %d\n",i);
+	}
 	
 	fim_CPU = clock();
 	

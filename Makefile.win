@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o Arquivos.o Construcao.o Util.o
-LINKOBJ  = main.o Arquivos.o Construcao.o Util.o
+OBJ      = main.o Arquivos.o Construcao.o Util.o SimulateAnneling.o heuristicas.o
+LINKOBJ  = main.o Arquivos.o Construcao.o Util.o SimulateAnneling.o heuristicas.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
@@ -35,3 +35,9 @@ Construcao.o: Construcao.cpp
 
 Util.o: Util.cpp
 	$(CPP) -c Util.cpp -o Util.o $(CXXFLAGS)
+
+SimulateAnneling.o: SimulateAnneling.cpp
+	$(CPP) -c SimulateAnneling.cpp -o SimulateAnneling.o $(CXXFLAGS)
+
+heuristicas.o: heuristicas.cpp
+	$(CPP) -c heuristicas.cpp -o heuristicas.o $(CXXFLAGS)
