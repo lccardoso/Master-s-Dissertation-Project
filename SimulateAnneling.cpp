@@ -16,11 +16,11 @@
 //	T<-- To {Temperatura Corrente}
 
 
-float SimulateAnneling(int m, int n, float demand, int alpha, int* d, int* c, int* z, int* y, int itermax)
+float SimulateAnneling (int m, int n, float demand, int alpha, int *d, int *c, int *z, int *y, int itermax)
 {
 	float D;
 	int SAmax;
-
-
-
+	
+	
+		
 }
