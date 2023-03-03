@@ -277,7 +277,7 @@ int calcula_clientes(int m, int *z){
 }
 
 //Implementação de uma construção com uma lista de instalações candidatas
-void construcao_parcial_gulosa(int n, int m, int *c, int *d, int *Ind, int *y, int **A){
+void construcao_parcial_gulosa(int n, int m, float demand, int *c, int *d, int *Ind, int *y, int **A){
 	
 	
 	int *cus_inst; // Vetor com o custo de abertura da instalação  "i"
@@ -289,12 +289,16 @@ void construcao_parcial_gulosa(int n, int m, int *c, int *d, int *Ind, int *y, i
 	int maior_ind;
 	int aux1=0;
 	int aux2=0; 
+	int cont=0;
 		
 	cus_inst = cria_vetor(n);
 	total_cob = cria_vetor(m);
 	maior = cria_vetor_float(n);
 	ind_maior = cria_vetor(n);
 	demanda_custo = cria_vetor_float(n);
+	
+	//Demanda atual do problema
+	printf("Demanda atual do problema a ser atendidade e %.5f\n ",  demand);
 		
 	for(int i=0; i<n; i++){
 		cus_inst[i] = c[i];// recebe os custo de abertura das instalações 
@@ -327,8 +331,23 @@ void construcao_parcial_gulosa(int n, int m, int *c, int *d, int *Ind, int *y, i
 			Ind[i] = aux2;
 			}
 		}
-	 printf("  A Relacao do custo/demanda de abertura da instalacao  %d  e  %f  \n", Ind[i] , demanda_custo[i] );	
+	 //printf("  A Relacao do custo/demanda de abertura da instalacao  %d  e  %f  \n", Ind[i] , demanda_custo[i] );	
 	}
+	
+	
+	
+	//Calculo da função objetivo
+		int aux3=0;	
+		//Ativacao das facilidades 
+		aux3 = Ind[cont];
+		
+		for(int i=0; i<n; i++){	
+			y[i]=0;	// Inicialmente todas as instalacoes estao desativadas	
+			if(aux3==i)
+				y[i]=1;
+			printf(" %d ", y[i]);
+			//system("PAUSE");
+		}
 		
 }
 

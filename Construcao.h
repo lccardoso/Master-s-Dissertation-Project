@@ -31,4 +31,4 @@ int calcula_clientes(int m, int *z);
 int calcula_facilidades(int n, int *y);
 
 //Implementação de uma construção com uma lista de instalações candidatas
-void construcao_parcial_gulosa(int n, int m, int *c, int *d, int *Ind, int *y, int **A);
+void construcao_parcial_gulosa(int n, int m, float demand, int *c, int *d, int *Ind, int *y, int **A);

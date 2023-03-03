@@ -61,7 +61,7 @@ int main(int argc, char* argv[]){
 	int ilsmax=10;		
 	int vezesnivel = 2; 
 	
-	char arquivo[] = "inst2.txt";
+	char arquivo[] = "inst1.txt";
 		
 		obter_parametros_fl(arquivo, &m, &n);
 		
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]){
 		
 	/*Calculo da demanda corrente para o problema*/
 	demand=calcula_demanda(m, d, porcentagem_d);	
-	//printf("Demanda atual do problema %.5f\n ",  demand);
+	//printf("Demanda atual do problema a ser atendidade e %.5f\n ",  demand);
 	
 	/*Construção de solução inicial - Randômica*/
 	//constroi_solucao(n, y);
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]){
 	/*Construção de solução inicial - Gulosa*/
 	//construcao_gulosa(m, n, c, c_aux, Ind, y,  z, d, A, demand);
 	
-	construcao_parcial_gulosa(n, m, c, d, Ind, y, A);
+	construcao_parcial_gulosa(n, m,demand, c, d, Ind, y, A);
 	
 	/*
 	vetor_cobertura(m,n,A,y,z);
