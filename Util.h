@@ -30,3 +30,8 @@ void imprime_matriz(int **adj, int m, int n);
 
 // imprimir matriz
 void imprime_matriz_float(float **adj, int m, int n);
+
+/* Gera numero aleatorio entre min e max */
+float randomico(float min, float max);
+
+

@@ -277,7 +277,7 @@ int calcula_clientes(int m, int *z){
 }
 
 //Implementação de uma construção com uma lista de instalações candidatas
-void construcao_parcial_gulosa(int n, int m, float demand, int *c, int *d, int *Ind, int *y, int **A){
+int *construcao_parcial_gulosa(int n, int m, float demand, float porcentagem_d, int *c, int *d, int *z, int *Ind, int *y, int **A){
 	
 	
 	int *cus_inst; // Vetor com o custo de abertura da instalação  "i"
@@ -286,7 +286,10 @@ void construcao_parcial_gulosa(int n, int m, float demand, int *c, int *d, int *
 	float *demanda_custo; // Indice de atendimento(RELACAO CUSTO COBERTURA) ** Ind = Demanda / custo de abertura da instalação "i"
 	float *maior;
 	int *ind_maior;
+	int *y_linha;
+	int dem_atual;
 	int maior_ind;
+	int fo;
 	int aux1=0;
 	int aux2=0; 
 	int cont=0;
@@ -296,9 +299,10 @@ void construcao_parcial_gulosa(int n, int m, float demand, int *c, int *d, int *
 	maior = cria_vetor_float(n);
 	ind_maior = cria_vetor(n);
 	demanda_custo = cria_vetor_float(n);
+	y_linha = cria_vetor(n);
 	
 	//Demanda atual do problema
-	printf("Demanda atual do problema a ser atendidade e %.5f\n ",  demand);
+	printf("Demanda atual do problema a ser atendida e %.5f\n ",  demand);
 		
 	for(int i=0; i<n; i++){
 		cus_inst[i] = c[i];// recebe os custo de abertura das instalações 
@@ -334,7 +338,7 @@ void construcao_parcial_gulosa(int n, int m, float demand, int *c, int *d, int *
 	 //printf("  A Relacao do custo/demanda de abertura da instalacao  %d  e  %f  \n", Ind[i] , demanda_custo[i] );	
 	}
 	
-	
+	while (dem_atual<demand){
 	
 	//Calculo da função objetivo
 		int aux3=0;	
@@ -342,13 +346,41 @@ void construcao_parcial_gulosa(int n, int m, float demand, int *c, int *d, int *
 		aux3 = Ind[cont];
 		
 		for(int i=0; i<n; i++){	
-			y[i]=0;	// Inicialmente todas as instalacoes estao desativadas	
 			if(aux3==i)
 				y[i]=1;
 			printf(" %d ", y[i]);
 			//system("PAUSE");
 		}
-		
+		printf("\n");
+	//Calculo do  vetor de cobertura
+	int soma;
+		for (int i=0; i<m;i++){
+			soma=0;
+			z[i]=0; //inicialmente, o v?ice i n??oberto
+				for (int j=0; j<n;j++){
+					soma+=A[i][j]*y[j];
+				}
+			if (soma>0) z[i]=1;
+			//printf(" %d", z[i]);
+		}
+	
+	//Calculo do demanda atendida
+	for(int j=0; j<m;j++){
+			dem_atual += d[j]*z[j];	
+	}
+	printf("Demanda atendida atual %d\n", dem_atual);
+	printf("\n");
+	
+	cont++;
+	}
+	
+	
+	
+	for(int i=0; i<n; i++){
+		y_linha[i]=y[i];
+	}
+	
+	return y_linha;
 }
 
 

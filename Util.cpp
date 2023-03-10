@@ -154,3 +154,12 @@ void imprime_matriz_float(float **adj, int m, int n)
 	}
 }
 
+/* Gera numero aleatorio entre min e max */
+float randomico(float min, float max)
+{
+	if (min == max) return min;
+	return ((float)(rand() % 10000 / 10000.0) * (max - min) + min);
+}
+
+
+

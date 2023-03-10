@@ -21,6 +21,7 @@ Bibliotecas e Imports
 #include "Construcao.h"
 #include "Util.h"
 #include "heuristicas.h"
+#include "SimulateAnneling.h"
 using namespace std;
 //---------------------------------------------------------------------------
 
@@ -86,15 +87,31 @@ int main(int argc, char* argv[]){
 		
 	/*Calculo da demanda corrente para o problema*/
 	demand=calcula_demanda(m, d, porcentagem_d);	
-	//printf("Demanda atual do problema a ser atendidade e %.5f\n ",  demand);
+	printf("Demanda atual do problema a ser atendida e %.5f\n ",  demand);
 	
 	/*Construção de solução inicial - Randômica*/
-	//constroi_solucao(n, y);
+	constroi_solucao(n, y);
 	
 	/*Construção de solução inicial - Gulosa*/
 	//construcao_gulosa(m, n, c, c_aux, Ind, y,  z, d, A, demand);
 	
-	construcao_parcial_gulosa(n, m,demand, c, d, Ind, y, A);
+	
+	//construcao_parcial_gulosa(n,m,demand,porcentagem_d,c,d,z,Ind,y,A);
+	//fo=calcula_fo(m, n, demand, alpha, d, c, z, y);
+	
+	
+	vetor_cobertura(m, n, A, y, z);
+	fo = calcula_fo(m, n, demand, alpha, d, c, z, y);
+	ninst = calcula_facilidades(n, y);
+	ncli = calcula_clientes(m, z);
+	printf("FO da solucao incial: %.5f - Clientes Atendidos: %d - Instalacoes Abertas: %d\n", fo, ncli, ninst);
+	
+	//Metodo Simulate Annelling
+	vetor_cobertura(m, n, A, y, z);
+	ninst = calcula_facilidades(n, y);
+	ncli = calcula_clientes(m, z);
+	fo = SimulateAnneling(m, n, demand, alpha, d, c, z, y, itermax, fo, A);
+	printf("FO da solucao SA: %.5f - Clientes Atendidos: %d - Instalacoes Abertas: %d\n", fo, ncli, ninst);
 	
 	/*
 	vetor_cobertura(m,n,A,y,z);
