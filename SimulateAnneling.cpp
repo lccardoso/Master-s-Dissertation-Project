@@ -19,15 +19,25 @@
 float SimulateAnneling(int m, int n, float demand, int alpha, int* d, int* c, int* z, int* y, int itermax, float fo, int **A)
 {
 
-	int SAmax = 100; // Varivel global, deve vir de fora como parametro
+	int SAmax = 150; // Varivel global, deve vir de fora como parametro
 	int i, j, aux;
 	float fo_estrela;
 	float fo_linha, delta;
-	float alphaSA=0.18; //Definir fator de resfriamento, deve vir de fora como parametro
+	float alphaSA=0.98; //Definir fator de resfriamento, deve vir de fora como parametro
 	int IterT;
+	int *zlinha;
+	int *ylinha;
+	int *zestrela;
+	int *yestrela;
+	bool melhorou;
 
 	float T_zero;
 	float T_inicial; //implementar logica para a tempetatura inicial - Utilizando 0.0001 ate a implementacao
+	
+	zlinha = cria_vetor(m);
+	ylinha = cria_vetor(n);
+	zestrela = cria_vetor(m);
+	yestrela = cria_vetor(n);
 
 	//Inicio do metodo Simulate Anelling
 
@@ -35,22 +45,21 @@ float SimulateAnneling(int m, int n, float demand, int alpha, int* d, int* c, in
 	
 	T_inicial = 100;
 
-	while (T_inicial > 0.01) {
+	while (T_inicial > 0.001) {
 		IterT = 0;
 		while (IterT < SAmax) {
 			IterT += 1;
+
+			j = rand() % (n);
+			atribuirvetor(zlinha, z, m); 
+			atribuirvetor(ylinha, y, n); 
 			
-			//Gerar uma nova solucao - Troca  bits
-			i = rand() % (n);
-			if(y[i]==1){
-				y[i] = 0;
-			}
-
+			//gerar vizinho - trocar o bit de acordo com o vetor selecionado e a pocição
+			trocabit(j, ylinha);
 			//calcula novo vetor de cobertura
-			vetor_cobertura(m, n, A, y, z);
-
+			refaz_vetor_cobertura(j, m, n, A, ylinha, zlinha);	
 			//calcula nova FO
-			fo_linha = calcula_fo(m, n, demand, alpha, d, c, z, y);
+			fo_linha = calcula_fo(m, n, demand, alpha, d, c, zlinha, ylinha);
 
 			//Calculo Delta
 			delta = fo_linha - fo;
@@ -58,7 +67,9 @@ float SimulateAnneling(int m, int n, float demand, int alpha, int* d, int* c, in
 				fo = fo_linha;
 				if (fo_linha < fo_estrela) {
 					fo_estrela = fo_linha;
-					printf("Solucao melhorada - Novo valor de FO e %f\n " , fo_estrela);
+					atribuirvetor(zestrela, zlinha, m); //z=zlinha
+					atribuirvetor(yestrela, ylinha, n); //y=ylinha
+					printf("Solucao melhorada pelo Simulate Annelling %8.2f - Temperatura  -   %8.2f\n " , fo_estrela, T_inicial );
 				}
 			}
 			else
@@ -67,20 +78,25 @@ float SimulateAnneling(int m, int n, float demand, int alpha, int* d, int* c, in
 				x = randomico(0, 1);
 				if (x < exp(-delta / T_inicial)) {
 					fo = fo_linha;
+					atribuirvetor(z, zlinha, m); //z=zlinha
+					atribuirvetor(y, ylinha, n); //y=ylinha
+					//printf("Solucao de piora aceita %8.2f - Temperatura  -   %8.2f\n " , fo_estrela, T_inicial );
+					melhorou = false;
 				}
-				/* Desfaz o movimento caso o vizinho nao seja de melhora
-				ou nao passe no teste de aceitacao */
 				else {
-					if(y[i]==0){
-						y[i] = 1;
-						}
+					trocabit(j, ylinha);
+					melhorou = true;		
 				}
 			}
 		}// final de SAmax iteracoes
+	//final do FOR
 		T_inicial = T_inicial * alphaSA;
 	}// temperatura de congelamento do sistema
 
 	//calcula novo vetor de cobertura
+	
+	atualiza_vetor(y,yestrela,n);
+	atualiza_vetor(z,zestrela,m);
 	return fo_estrela;
 
 }

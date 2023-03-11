@@ -161,5 +161,9 @@ float randomico(float min, float max)
 	return ((float)(rand() % 10000 / 10000.0) * (max - min) + min);
 }
 
-
+/* atualiza a melhor solucao */
+void atualiza_vetor(int *s_star, int *s, int n)
+{
+   for (int j=0; j < n; j++) s_star[j] = s[j];
+}
 

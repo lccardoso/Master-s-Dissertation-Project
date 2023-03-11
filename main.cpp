@@ -55,14 +55,14 @@ int main(int argc, char* argv[]){
    
    //Leitura dos arquivos das instâncias, montagem das matrizes e vetores para resolução do modelo
    
-    float raio=5.750;	//raio de cobertura 
+    float raio=5.50;	//raio de cobertura 
     float porcentagem_d = 0.5;	//percentual da demanda atendido
     int alpha = 1000;
 	int itermax=100;	//numero maximo de iterações - ILS
 	int ilsmax=10;		
 	int vezesnivel = 2; 
 	
-	char arquivo[] = "inst1.txt";
+	char arquivo[] = "inst2.txt";
 		
 		obter_parametros_fl(arquivo, &m, &n);
 		
@@ -106,12 +106,14 @@ int main(int argc, char* argv[]){
 	ncli = calcula_clientes(m, z);
 	printf("FO da solucao incial: %.5f - Clientes Atendidos: %d - Instalacoes Abertas: %d\n", fo, ncli, ninst);
 	
+	inicio_CPU = clock();
+	srand((unsigned) time(NULL)); // pega a hora do relogio como semente
+	
 	//Metodo Simulate Annelling
 	vetor_cobertura(m, n, A, y, z);
 	ninst = calcula_facilidades(n, y);
 	ncli = calcula_clientes(m, z);
 	fo = SimulateAnneling(m, n, demand, alpha, d, c, z, y, itermax, fo, A);
-	printf("FO da solucao SA: %.5f - Clientes Atendidos: %d - Instalacoes Abertas: %d\n", fo, ncli, ninst);
 	
 	/*
 	vetor_cobertura(m,n,A,y,z);
@@ -119,12 +121,13 @@ int main(int argc, char* argv[]){
 	ninst = calcula_facilidades(n, y);
 	ncli = calcula_clientes(m, z);
 	printf("Fo da solucao incial: %.5f - Clientes atendidos: %d - Facilidades abertas: %d\n",fo, ncli, ninst);
+	*/
+		
 	
-	inicio_CPU = clock();
-	srand((unsigned) time(NULL)); // pega a hora do relogio como semente	
-	
+	/*
 	//Refinamento	
 	fo=ils (m, n, A, z, y, d, c, alpha, itermax,  vezesnivel,  demand, 0.6);
+	*/
 	
 	fim_CPU = clock();
 	printf("Tempo execucao = %10.2f segundos\n",(float)(fim_CPU - inicio_CPU)/CLOCKS_PER_SEC);
@@ -137,14 +140,15 @@ int main(int argc, char* argv[]){
 			demanda_atendida=demanda_atendida + z[i]*d[i];
 		}
 	
-	printf("Fo da solucao Final Refinada: %f - Clientes atendidos: %d - Facilidades abertas: %d - Demanda atendida: %f\n",fo, ncli, ninst, demanda_atendida);
+	printf("FO Solucao Final - Simulate Anneling: %f - Clientes Atendidos: %d - Instalacoes Abertas: %d - Demanda Atendida: %f\n",fo, ncli, ninst, demanda_atendida);
 	for (int i=0; i<n; i++){
 		if (y[i]==1) printf("Facilidade aberta: %d\n",i);
 	}
 	
+	
 	fim_CPU = clock();
 	
-*/
+
 	
 	system("PAUSE");
     return 0;

@@ -34,4 +34,5 @@ void imprime_matriz_float(float **adj, int m, int n);
 /* Gera numero aleatorio entre min e max */
 float randomico(float min, float max);
 
-
+/*Atualiza vetor de solucao*/
+void atualiza_vetor(int *s_star, int *s, int n);
