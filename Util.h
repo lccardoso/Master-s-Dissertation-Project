@@ -36,3 +36,6 @@ float randomico(float min, float max);
 
 /*Atualiza vetor de solucao*/
 void atualiza_vetor(int *s_star, int *s, int n);
+
+/*Gera a temperatura inicial para o método Simulate Annelling*/
+float Temp_InicialSA(int betha, float gama, int SAmax,float demand, int *y,int *z, float fo, int n, int m,int alpha, int* d, int* c,int **A);

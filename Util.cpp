@@ -5,6 +5,7 @@
 #include <limits.h>
 #include <time.h>
 #include "Util.h"
+#include "Construcao.h"
 
 #define MAX(x,y) ((x)<(y) ? (y) : (x))
 
@@ -165,5 +166,74 @@ float randomico(float min, float max)
 void atualiza_vetor(int *s_star, int *s, int n)
 {
    for (int j=0; j < n; j++) s_star[j] = s[j];
+}
+
+/*Gera a temperatura inicial para o método Simulate Annelling*/
+float Temp_InicialSA(int betha, float gama, int SAmax,float demand, int *y, int *z, float fo, int n, int m,int alpha, int* d, int* c,int **A){
+	
+	int T = 100; // chute inicial para a temperatura inicial
+	bool continua;
+	int aceitos;
+	float delta;
+	float fo_linha;
+	int j;
+	int iterT;
+	
+	int *zlinha;
+	int *ylinha;
+	int *zestrela;
+	int *yestrela;
+	
+	zlinha = cria_vetor(m);
+	ylinha = cria_vetor(n);
+	zestrela = cria_vetor(m);
+	yestrela = cria_vetor(n);
+	
+
+	ylinha = cria_vetor(n);
+	yestrela = cria_vetor(n);
+	
+	continua = true;
+	
+	while(continua ){
+		aceitos = 0;
+		iterT = 0;
+		while(iterT<SAmax){
+			
+			iterT ++;
+			
+			j = rand() % (n);
+			atribuirvetor(zlinha, z, m); 
+			atribuirvetor(ylinha, y, n); 
+			
+			//gerar vizinho - trocar o bit de acordo com o vetor selecionado e a pocição
+			trocabit(j, ylinha);
+			//calcula novo vetor de cobertura
+			refaz_vetor_cobertura(j, m, n, A, ylinha, zlinha);	
+			//calcula nova FO
+			fo_linha = calcula_fo(m, n, demand, alpha, d, c, zlinha, ylinha);
+			
+			delta = fo_linha - fo;
+			if( delta < 0){
+				aceitos ++;
+			}else{
+				double x;
+				x = randomico(0, 1);
+				if(x < exp(-delta / T)){
+					aceitos ++;
+				}
+			}
+			trocabit(j, ylinha);
+		}
+		if(aceitos < gama*SAmax){
+			T = betha * T;
+		}else{
+			
+			continua = false;
+		} 
+	}
+	printf("Temperatura inicial %d\n " , T );
+	return T;
+	
 }
 

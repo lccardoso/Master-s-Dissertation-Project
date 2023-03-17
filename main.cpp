@@ -52,17 +52,21 @@ int main(int argc, char* argv[]){
    float fo; 		//valor da solução - função objetivo
    int ninst;		//quantidade de instalações ativas
    int ncli;		//quantidade de clientes cobertos
+   float TSA;
    
    //Leitura dos arquivos das instâncias, montagem das matrizes e vetores para resolução do modelo
    
-    float raio=5.50;	//raio de cobertura 
-    float porcentagem_d = 0.5;	//percentual da demanda atendido
+    float raio=5;	//raio de cobertura 
+    float porcentagem_d = 0.6;	//percentual da demanda atendido
     int alpha = 1000;
+    int betha = 2;
+    float gama = 0.95; // Taxa de aceitação de 95% 
 	int itermax=100;	//numero maximo de iterações - ILS
-	int ilsmax=10;		
+	int ilsmax=100;		
 	int vezesnivel = 2; 
+	int SAmax = 10;
 	
-	char arquivo[] = "inst2.txt";
+	char arquivo[] = "inst1.txt";
 		
 		obter_parametros_fl(arquivo, &m, &n);
 		
@@ -79,7 +83,7 @@ int main(int argc, char* argv[]){
 	z= cria_vetor(m); //vetor de clientes atendidos por pelo menos uma facilidade
 	A= cria_matriz(m, n); //matriz de Adjacências
 	
-	le_arq_matrizfl(arquivo, m, n, F, C, c, c_aux, d, Ind);
+	le_arq_matrizfl(arquivo, m, n, F, C, c, d);
 	D=cria_matriz_distfl(m, n, F, C);
 	cria_matriz_adj(m, n, raio, D, A);
 	
@@ -102,17 +106,24 @@ int main(int argc, char* argv[]){
 	
 	vetor_cobertura(m, n, A, y, z);
 	fo = calcula_fo(m, n, demand, alpha, d, c, z, y);
-	ninst = calcula_facilidades(n, y);
 	ncli = calcula_clientes(m, z);
+	ninst = calcula_facilidades(n, y);
+	
 	printf("FO da solucao incial: %.5f - Clientes Atendidos: %d - Instalacoes Abertas: %d\n", fo, ncli, ninst);
 	
 	inicio_CPU = clock();
 	srand((unsigned) time(NULL)); // pega a hora do relogio como semente
 	
 	//Metodo Simulate Annelling
+	//Calculo da temperatura inicial
+	TSA = Temp_InicialSA(betha, gama,SAmax,demand,y,z,fo,n,m,alpha,d,c,A);
+	printf("Temperatura inicial %f\n " , TSA);
+	system("PAUSE");
+	//Define vetro de cobertura
 	vetor_cobertura(m, n, A, y, z);
 	ninst = calcula_facilidades(n, y);
 	ncli = calcula_clientes(m, z);
+	//Execucao do metodo SA
 	fo = SimulateAnneling(m, n, demand, alpha, d, c, z, y, itermax, fo, A);
 	
 	/*

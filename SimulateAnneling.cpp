@@ -23,7 +23,7 @@ float SimulateAnneling(int m, int n, float demand, int alpha, int* d, int* c, in
 	int i, j, aux;
 	float fo_estrela;
 	float fo_linha, delta;
-	float alphaSA=0.98; //Definir fator de resfriamento, deve vir de fora como parametro
+	float alphaSA=0.99; //Definir fator de resfriamento, deve vir de fora como parametro
 	int IterT;
 	int *zlinha;
 	int *ylinha;
